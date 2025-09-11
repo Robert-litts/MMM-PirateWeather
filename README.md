@@ -1,14 +1,12 @@
-# MMM-DarkSkyForecast
+# MMM-PirateWeather
 
 This a module for <strong>MagicMirror</strong><br>
 https://magicmirror.builders/<br>
 https://github.com/MichMich/MagicMirror
 
-![Screenshot](/../screenshots/MMM-DarkSkyForecast.png?raw=true "Screenshot")
-
 A weather module that displays current, hourly and daily forecast information
-using data from the Dark Sky API. This is a replacement module for MMM-MyWeather, now that Weather Underground no longer allows free API access.  This a complete rewrite from scratch but maintains
-much of the same functionality.
+using data from the Pirate Weather API. This is a replacement module for MMM-DarkSkyForecast (since Dark Sky Forecast went paid), which originally was a replacement for MMM-MyWeather (Weather Underground API access went paid). In September 2025 AccuWeather also removed its free-tier API.
+This module has been refreshed to remove depreceated packages.
 
 **NOTE:** This module uses the Nunjucks templating system introduced in version 2.2.0 of MagicMirror.  If you're seeing nothing on your display where you expect this module to appear, make sure your MagicMirror version is at least 2.2.0.
 
@@ -16,10 +14,8 @@ much of the same functionality.
 ## Installation
 
 1. Navigate into your MagicMirror `modules` folder and execute<br>
-`git clone https://github.com/jclarke0000/MMM-DarkSkyForecast.git`.
-2. Enter the new `MMM-DarkSkyForecast` directory and execute `npm install`.
-
-
+`git clone https://github.com/Robert-litts/MMM-PirateWeather.git`.
+2. Enter the new `MMM-PirateWeather` directory and execute `npm install`.
 
 ## Configuration
 
@@ -29,10 +25,8 @@ At a minimum you need to supply the following required configuration parameters:
 * `latitude`
 * `longitude`
 
-You can request an API key to access Dark Sky data here:
-`https://darksky.net/dev`.
-
-Free tier is fine -- this module will not make any where near 1000 request on one day.
+You can request an API key to access Dark Sky data here and choose the Free Tier:
+[Pirate Weather API Key](https://pirateweather.net/en/latest/)
 
 Find out your latitude and longitude here:
 `https://www.latlong.net/`.
@@ -69,7 +63,7 @@ Find out your latitude and longitude here:
     </tr>
     <tr>
       <td><code>units</code></td>
-      <td>One of the following: <code>si</code>, <code>ca</code>, <code>uk2</code>, or <code>us</code>.<br><br><strong>Type</strong> <code>String</code><br>Defaults to <code>ca</code><br />See https://darksky.net/dev/docs#request-parameters for details on units.</td>
+      <td>One of the following: <code>si</code>, <code>ca</code>, <code>uk</code>, or <code>us</code>.<br><br><strong>Type</strong> <code>String</code><br>Defaults to <code>ca</code><br />See https://darksky.net/dev/docs#request-parameters for details on units.</td>
     </tr>
     <tr>
       <td><code>showCurrentConditions</code></td>
@@ -176,7 +170,7 @@ Find out your latitude and longitude here:
 
 ```
 {
-  module: "MMM-DarkSkyForecast",
+  module: "MMM-PirateWeather",
   header: "Weather",
   position: "top_right",
   classes: "default everyone",
