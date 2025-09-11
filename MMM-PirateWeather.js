@@ -1,8 +1,8 @@
 /*********************************
 
   Magic Mirror Module:
-  MMM-DarkSkyForecast
-  https://github.com/jclarke0000/MMM-DarkSkyForecast
+  MMM-PirateWeather
+  https://github.com/Robert-litts/MMM-PirateWeather
 
   Icons in use by this module:
   
@@ -31,14 +31,14 @@
   Some of the icons were modified to better work with the module's
   structure and aesthetic.
 
-  Weather data provided by Dark Sky
+  Weather data provided by Pirate Weather API
 
-  By Jeff Clarke
+  By Jeff Clarke (original), updated by Robert Litts for Pirate Weather
   MIT Licensed
 
 *********************************/
 
-Module.register("MMM-DarkSkyForecast", {
+Module.register("MMM-PirateWeather", {
 
   /*
     This module uses the Nunjucks templating system introduced in
@@ -85,22 +85,22 @@ Module.register("MMM-DarkSkyForecast", {
     label_timeFormat: "h a",
     label_days: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
     label_ordinals: ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"],
-    moduleTimestampIdPrefix: "DARK_SKY_TIMESTAMP_"
+    moduleTimestampIdPrefix: "PIRATE_WEATHER_TIMESTAMP_"
   },
 
-  validUnits: ["ca","si","uk2","us"],
+  validUnits: ["ca","si","uk","us"],
   validLayouts: ["tiled", "table"],
 
   getScripts: function() {
-    return ["moment.js", this.file("skycons.js")];
+    return [this.file("skycons.js")];
   },
 
   getStyles: function () {
-    return ["MMM-DarkSkyForecast.css"];
+    return ["MMM-PirateWeather.css"];
   },
 
   getTemplate: function () {
-    return "mmm-darksky-forecast.njk";
+    return "mmm-pirateweather-forecast.njk";
   },
 
   /*
@@ -188,8 +188,6 @@ Module.register("MMM-DarkSkyForecast", {
       "animatedIconPlayDelay"
     ]);
 
-
-
     //force icon set to mono version whern config.coloured = false
     if (this.config.colored == false) {
       this.config.iconset = this.config.iconset.replace("c","m");      
@@ -212,7 +210,7 @@ Module.register("MMM-DarkSkyForecast", {
   },
 
   getData: function() {
-    this.sendSocketNotification("DARK_SKY_FORECAST_GET", {
+    this.sendSocketNotification("PIRATE_WEATHER_GET", {
       apikey: this.config.apikey,
       latitude: this.config.latitude,
       longitude: this.config.longitude,
@@ -226,7 +224,7 @@ Module.register("MMM-DarkSkyForecast", {
 
   socketNotificationReceived: function(notification, payload) {
 
-    if (notification == "DARK_SKY_FORECAST_DATA" && payload.instanceId == this.identifier) {
+    if (notification == "PIRATE_WEATHER_DATA" && payload.instanceId == this.identifier) {
 
       //clear animated icon cache
       if (this.config.useAnimatedIcons) {
@@ -234,14 +232,14 @@ Module.register("MMM-DarkSkyForecast", {
       }
 
       //process weather data
-      this.dataRefreshTimeStamp = moment().format("x");
+      this.dataRefreshTimeStamp = new Date().getTime();
       this.weatherData = payload;
       this.formattedWeatherData = this.processWeatherData();
 
       this.updateDom(this.config.updateFadeSpeed);
 
       //broadcast weather update
-      this.sendNotification("DARK_SKY_FORECAST_WEATHER_UPDATE", payload);
+      this.sendNotification("PIRATE_WEATHER_UPDATE", payload);
 
       /*
         Start icon playback. We need to wait until the DOM update
@@ -346,12 +344,17 @@ Module.register("MMM-DarkSkyForecast", {
     if (type == "daily") {
 
       //day name (e.g.: "MON")
-      fItem.day = this.config.label_days[moment(fData.time * 1000).format("d")];
+      fItem.day = this.config.label_days[new Date(fData.time * 1000).getDay()];
 
     } else { //hourly
 
       //time (e.g.: "5 PM")
-      fItem.time = moment(fData.time * 1000).format(this.config.label_timeFormat);
+      var date = new Date(fData.time * 1000);
+      var hours = date.getHours();
+      var ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      fItem.time = hours + ' ' + ampm;
     }
 
     // --------- Icon ---------
@@ -432,7 +435,7 @@ Module.register("MMM-DarkSkyForecast", {
   },
 
   /*
-    Returns the units in use for the data pull from Dark Sky
+    Returns the units in use for the data pull from Pirate Weather
    */
   getUnit: function(metric) {
     return this.units[metric][this.weatherData.flags.units];
@@ -454,26 +457,26 @@ Module.register("MMM-DarkSkyForecast", {
     accumulationRain: {
       si: "mm",
       ca: "mm",
-      uk2: "mm",
+      uk: "mm",
       us: "in"
     },
     accumulationSnow: {
       si: "cm",
       ca: "cm",
-      uk2: "cm",
+      uk: "cm",
       us: "in"
     },
     windSpeed: {
       si: "m/s",
       ca: "km/h",
-      uk2: "mph",
+      uk: "mph",
       us: "mph"
     }
   },
 
   /*
     Icon sets can be added here.  The path is relative to
-    MagicMirror/modules/MMM-DarkSky/icons, and the format
+    MagicMirror/modules/MMM-PirateWeather/icons, and the format
     is specified here so that you can use icons in any format
     that works for you.
 
