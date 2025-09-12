@@ -28,43 +28,49 @@ module.exports = NodeHelper.create({
   },
 
   // Helper function to make HTTPS requests
-  makeRequest: function(requestUrl, callback) {
-    const parsedUrl = new URL(requestUrl);
+   makeRequest: function(requestUrl, callback) {
+      console.log("[MMM-PirateWeather] Making request to:", requestUrl);
+      
+      const parsedUrl = new URL(requestUrl);
+      
+      const options = {
+        hostname: parsedUrl.hostname,
+        port: 443,
+        path: parsedUrl.pathname + parsedUrl.search,  // Fixed: combine pathname and search
+        method: 'GET',
+        timeout: 10000,
+        headers: {
+          'User-Agent': 'MMM-PirateWeather/1.0',
+          'Accept': 'application/json',
+          'Connection': 'close'
+        }
+      };
+        
+      const req = https.request(options, (res) => {
+        
+        let data = '';
+        
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+        
+        res.on('end', () => {
+          callback(null, res, data);
+        });
+      });
     
-    const options = {
-      hostname: parsedUrl.hostname,
-      port: 443,
-      path: parsedUrl.path,
-      method: 'GET',
-      timeout: 10000,
-      headers: {
-        'User-Agent': 'MMM-PirateWeather/1.0'
-      }
-    };
-
-    const req = https.request(options, (res) => {
-      let data = '';
-      
-      res.on('data', (chunk) => {
-        data += chunk;
+      req.on('error', (error) => {
+        callback(error, null, null);
       });
-      
-      res.on('end', () => {
-        callback(null, res, data);
+    
+      req.on('timeout', () => {
+        req.destroy();
+        callback(new Error('Request timeout'), null, null);
       });
-    });
-
-    req.on('error', (error) => {
-      callback(error, null, null);
-    });
-
-    req.on('timeout', () => {
-      req.destroy();
-      callback(new Error('Request timeout'), null, null);
-    });
-
-    req.end();
-  },
+    
+      req.setTimeout(10000);
+      req.end();
+    },
 
   start: function() {
     console.log("====================== Starting node_helper for module [" + this.name + "] - Using Pirate Weather API");
