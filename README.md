@@ -30,6 +30,26 @@ You can request an API key to access Pirate Weather data here and choose the Fre
 
 Find your latitude and longitude [here](https://www.latlong.net/)
 
+## Sample Configuration
+
+```
+{
+  module: "MMM-PirateWeather",
+  header: "Weather",
+  position: "top_right",
+  classes: "default everyone",
+  disabled: false,
+  config: {
+    apikey: "SUPER SECRET!!!",
+    latitude: "51.506130",
+    longitude: "-0.090270",      
+    iconset: "4c",
+    concise: false,
+    forecastLayout: "table"
+  }
+},
+```
+
 ### Other optional parameters
 
 <table>
@@ -164,26 +184,6 @@ Find your latitude and longitude [here](https://www.latlong.net/)
 
   </tbody>
 </table>
-
-## Sample Configuration
-
-```
-{
-  module: "MMM-PirateWeather",
-  header: "Weather",
-  position: "top_right",
-  classes: "default everyone",
-  disabled: false,
-  config: {
-    apikey: "SUPER SECRET!!!",
-    latitude: "51.506130",
-    longitude: "-0.090270",      
-    iconset: "4c",
-    concise: false,
-    forecastLayout: "table"
-  }
-},
-```
 
 ## Icon Sets
 
