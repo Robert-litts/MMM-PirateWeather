@@ -28,8 +28,7 @@ At a minimum you need to supply the following required configuration parameters:
 You can request an API key to access Pirate Weather data here and choose the Free Tier:
 [Pirate Weather API Key](https://pirateweather.net/en/latest/)
 
-Find out your latitude and longitude here:
-`https://www.latlong.net/`.
+Find out your latitude and longitude [here](https://www.latlong.net/)
 
 ### Other optional parameters
 
