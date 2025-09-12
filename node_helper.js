@@ -29,7 +29,7 @@ module.exports = NodeHelper.create({
 
   // Helper function to make HTTPS requests
    makeRequest: function(requestUrl, callback) {
-      console.log("[MMM-PirateWeather] Making request to:", requestUrl);
+      //console.log("[MMM-PirateWeather] Making request to:", requestUrl);
       
       const parsedUrl = new URL(requestUrl);
       

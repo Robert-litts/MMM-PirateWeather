@@ -206,12 +206,12 @@ This module is set to be 300px wide by default.  If you wish to override it, you
 }
 ```
 
-Most important elements of this module have one or more class names applied. Examine the `MMM-DarkSkyForecast.css` or inspect elements directly with your browser of choice to determine what class you would like to override.
+Most important elements of this module have one or more class names applied. Examine the `MMM-PirateWeather.css` or inspect elements directly with your browser of choice to determine what class you would like to override.
 
 
 ## For Module Developers
 
-This module broadcasts a notification when it recieves a weather update.  The notification is `DARK_SKY_FORECAST_WEATHER_UPDATE` and the payload contains Dark Sky's JSON weather forecast object.  For details on the weather object, see https://darksky.net/dev/docs.
+This module broadcasts a notification when it recieves a weather update.  The notification is `PIRATE_WEATHER_UPDATE` and the payload contains Dark Sky's JSON weather forecast object. For details on the weather object, see https://docs.pirateweather.net/en/latest/API/.
 
 
 ## Attributions
